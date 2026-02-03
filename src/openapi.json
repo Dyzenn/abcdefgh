@@ -20,38 +20,6 @@
     { "name": "Maker" }
   ],
   "paths": {
-    "/maker/brat": {
-      "get": {
-        "summary": "Brat Generator (GET)",
-        "tags": [
-          "Maker"
-        ],
-        "parameters": [
-          {
-            "name": "text",
-            "in": "query",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "example": "halo dunia"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Gambar WebP",
-            "content": {
-              "image/webp": {
-                "schema": {
-                  "type": "string",
-                  "format": "binary"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
     "/ai/copilot": {
       "get": {
         "summary": "Copilot Chat",
