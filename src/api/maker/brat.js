@@ -3,7 +3,7 @@ const sharp = require('sharp');
 
 const generateImage = async (text) => {
   const size = 512;
-  const padX = 35; // Margin sesuai permintaan (35px)
+  const padX = 35; 
   const canvas = createCanvas(size, size);
   const ctx = canvas.getContext('2d');
 
@@ -17,7 +17,6 @@ const generateImage = async (text) => {
   ctx.textAlign = 'left';
   ctx.textBaseline = 'top';
   
-  // Efek gepek horizontal (0.9)
   ctx.setTransform(0.9, 0, 0, 1, 0, 0); 
 
   const words = text.trim().split(/\s+/);
@@ -26,7 +25,6 @@ const generateImage = async (text) => {
 
   for (const w of words) {
     const test = line + w + ' ';
-    // Menghitung lebar dengan mempertimbangkan transformasi
     if (ctx.measureText(test).width > (size - padX * 2) / 0.9) {
       lines.push(line.trim());
       line = w + ' ';
@@ -40,13 +38,12 @@ const generateImage = async (text) => {
   const lineHeight = 110;
   let y = 60;
   for (const l of lines) {
-    ctx.fillText(l, padX / 0.9, y); // Kompensasi koordinat X karena transform
+    ctx.fillText(l, padX / 0.9, y); 
     y += lineHeight;
   }
 
   const png = canvas.toBuffer('image/png');
 
-  // Blur halus 1.4 + Webp kualitas 95
   return await sharp(png)
     .resize(512, 512)
     .blur(1.4)
@@ -55,8 +52,10 @@ const generateImage = async (text) => {
 };
 
 module.exports = function (app) {
+  // PERBAIKAN DISINI: Jalur disamakan dengan OpenAPI (/maker/brat)
+  
   // Support GET
-  app.get('/api/image/brat', async (req, res) => {
+  app.get('/maker/brat', async (req, res) => {
     const text = req.query.text;
     if (!text) return res.status(400).json({ status: false, message: 'Gunakan ?text=isi_teks' });
 
@@ -70,7 +69,7 @@ module.exports = function (app) {
   });
 
   // Support POST
-  app.post('/api/image/brat', async (req, res) => {
+  app.post('/maker/brat', async (req, res) => {
     const { text } = req.body;
     if (!text) return res.status(400).json({ status: false, message: 'Body "text" diperlukan' });
 
@@ -83,3 +82,4 @@ module.exports = function (app) {
     }
   });
 };
+
